@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peachy Pixel Pro</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #222;
+            color: #eee;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #FF9E80; /* Peach color */
+            text-shadow: 0 0 10px rgba(255, 158, 128, 0.5);
+            font-size: 2.5rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            justify-content: center;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border: 2px solid #444;
+            border-radius: 6px;
+            background-color: #444;
+            color: #fff;
+            font-size: 16px;
+            width: 250px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #FF9E80;
+        }
+
+        input[type="range"] {
+            width: 150px;
+        }
+
+        .value-display {
+            font-size: 14px;
+            color: #FF9E80;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 12px 18px;
+            background-color: #FF9E80;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #FF8A65;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .secondary-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .secondary-btn:hover {
+            background-color: #45a049;
+        }
+
+        .tertiary-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .tertiary-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        .quaternary-btn {
+            background-color: #9C27B0;
+            color: white;
+        }
+
+        .quaternary-btn:hover {
+            background-color: #7B1FA2;
+        }
+
+        .grid-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            overflow: auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .pixel-grid {
+            display: grid;
+            gap: 1px;
+            background-color: #555;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .pixel {
+            width: var(--pixel-size);
+            height: var(--pixel-size);
+            background-color: var(--bg-color, #444);
+            border-radius: 1px;
+            transition: background-color 0.2s;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .pixel.filled {
+            background-color: var(--text-color, #FF9E80);
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #FF9E80;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            font-weight: bold;
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #FF9E80;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .ascii-output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        .ascii-output h3 {
+            margin-top: 0;
+            color: #FF9E80;
+        }
+
+        .ascii-output pre {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 6px;
+            overflow: auto;
+            font-size: 14px;
+            line-height: 1.2;
+            white-space: pre;
+            color: #fff;
+            border: 1px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Peachy Pixel Pro</h1>
+        
+        <div class="controls">
+            <div class="input-group">
+                <label for="textInput">Enter Text:</label>
+                <input type="text" id="textInput" placeholder="Type something..." value="">
+            </div>
+            
+            <div class="input-group">
+                <label for="zoomSlider">Zoom:</label>
+                <input type="range" id="zoomSlider" min="1" max="10" value="1">
+                <div class="value-display" id="zoomValue">1x</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="pixelDensitySlider">Pixel Density:</label>
+                <input type="range" id="pixelDensitySlider" min="1" max="5" value="1">
+                <div class="value-display" id="pixelDensityValue">1x</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="charSpacingSlider">Character Spacing:</label>
+                <input type="range" id="charSpacingSlider" min="0" max="5" value="1">
+                <div class="value-display" id="charSpacingValue">1</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="lineHeightSlider">Line Height:</label>
+                <input type="range" id="lineHeightSlider" min="0" max="5" value="0">
+                <div class="value-display" id="lineHeightValue">0</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="textColor">Text Color:</label>
+                <div class="color-picker">
+                    <input type="color" id="textColor" value="#FF9E80">
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="bgColor">Background Color:</label>
+                <div class="color-picker">
+                    <input type="color" id="bgColor" value="#444444">
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Grid Lines:</label>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="gridToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Animation:</label>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="animationToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="generateBtn">Generate</button>
+            </div>
+            
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="clearBtn" class="secondary-btn">Clear</button>
+            </div>
+            
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="invertBtn" class="tertiary-btn">Invert Colors</button>
+            </div>
+            
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="randomColorBtn" class="quaternary-btn">Random Colors</button>
+            </div>
+            
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="savePngBtn">Save as PNG</button>
+            </div>
+            
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="asciiBtn">Export as ASCII</button>
+            </div>
+        </div>
+        
+        <div class="grid-container">
+            <div class="pixel-grid" id="pixelGrid"></div>
+        </div>
+        
+        <div class="ascii-output" id="asciiOutput">
+            <h3>ASCII Art Representation</h3>
+            <pre id="asciiRepresentation"></pre>
+            <button id="copyAsciiBtn" class="secondary-btn">Copy ASCII</button>
+        </div>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">Image saved!</div>
+
+    <script>
+        // Define pixel alphabet (5x7 matrix for each character)
+        const pixelAlphabet = {
+            'A': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,1,1,1,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1]
+            ],
+            'B': [
+                [1,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,1,1,1,0]
+            ],
+            'C': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            'D': [
+                [1,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,1,1,1,0]
+            ],
+            'E': [
+                [1,1,1,1,1],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,1,1,1,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,1,1,1,1]
+            ],
+            'F': [
+                [1,1,1,1,1],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,1,1,1,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0]
+            ],
+            'G': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,0],
+                [1,0,1,1,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            'H': [
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,1,1,1,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1]
+            ],
+            'I': [
+                [1,1,1,1,1],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [1,1,1,1,1]
+            ],
+            'J': [
+                [1,1,1,1,1],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [1,0,0,1,0],
+                [0,1,1,0,0]
+            ],
+            'K': [
+                [1,0,0,0,1],
+                [1,0,0,1,0],
+                [1,0,1,0,0],
+                [1,1,0,0,0],
+                [1,0,1,0,0],
+                [1,0,0,1,0],
+                [1,0,0,0,1]
+            ],
+            'L': [
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,1,1,1,1]
+            ],
+            'M': [
+                [1,0,0,0,1],
+                [1,1,0,1,1],
+                [1,0,1,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1]
+            ],
+            'N': [
+                [1,0,0,0,1],
+                [1,1,0,0,1],
+                [1,0,1,0,1],
+                [1,0,0,1,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1]
+            ],
+            'O': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            'P': [
+                [1,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,1,1,1,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0]
+            ],
+            'Q': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,1,0,1],
+                [1,0,0,1,0],
+                [0,1,1,0,1]
+            ],
+            'R': [
+                [1,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,1,1,1,0],
+                [1,0,1,0,0],
+                [1,0,0,1,0],
+                [1,0,0,0,1]
+            ],
+            'S': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,0],
+                [0,1,1,1,0],
+                [0,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            'T': [
+                [1,1,1,1,1],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0]
+            ],
+            'U': [
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            'V': [
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,0,1,0],
+                [0,0,1,0,0]
+            ],
+            'W': [
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [1,0,1,0,1],
+                [1,0,1,0,1],
+                [1,1,0,1,1],
+                [1,0,0,0,1]
+            ],
+            'X': [
+                [1,0,0,0,1],
+                [0,1,0,1,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,1,0,1,0],
+                [1,0,0,0,1]
+            ],
+            'Y': [
+                [1,0,0,0,1],
+                [0,1,0,1,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0]
+            ],
+            'Z': [
+                [1,1,1,1,1],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,1,1,1,1]
+            ],
+            ' ': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '0': [
+                [0,1,1,1,0],
+                [1,0,0,1,1],
+                [1,0,1,0,1],
+                [1,1,0,0,1],
+                [1,0,1,0,1],
+                [1,0,0,1,1],
+                [0,1,1,1,0]
+            ],
+            '1': [
+                [0,0,1,0,0],
+                [0,1,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [1,1,1,1,1]
+            ],
+            '2': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [0,0,0,0,1],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [1,1,1,1,1]
+            ],
+            '3': [
+                [1,1,1,1,0],
+                [0,0,0,0,1],
+                [0,0,0,0,1],
+                [0,1,1,1,0],
+                [0,0,0,0,1],
+                [0,0,0,0,1],
+                [1,1,1,1,0]
+            ],
+            '4': [
+                [1,0,0,1,0],
+                [1,0,0,1,0],
+                [1,0,0,1,0],
+                [1,1,1,1,1],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0]
+            ],
+            '5': [
+                [1,1,1,1,1],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,1,1,1,0],
+                [0,0,0,0,1],
+                [0,0,0,0,1],
+                [1,1,1,1,0]
+            ],
+            '6': [
+                [0,1,1,1,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0],
+                [1,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            '7': [
+                [1,1,1,1,1],
+                [0,0,0,0,1],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0]
+            ],
+            '8': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            '9': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,1],
+                [0,0,0,0,1],
+                [0,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            '!': [
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0]
+            ],
+            '?': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [0,0,0,0,1],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0]
+            ],
+            '.': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0]
+            ],
+            ',': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0]
+            ],
+            ':': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            ';': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0]
+            ],
+            '-': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,1,1,1,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '_': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [1,1,1,1,1]
+            ],
+            '+': [
+                [0,0,0,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,1,1,1,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0]
+            ],
+            '=': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [1,1,1,1,1],
+                [0,0,0,0,0],
+                [1,1,1,1,1],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '/': [
+                [0,0,0,0,1],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [1,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '\\': [
+                [1,0,0,0,0],
+                [0,1,0,0,0],
+                [0,0,1,0,0],
+                [0,0,0,1,0],
+                [0,0,0,0,1],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '(': [
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,0,1,0,0]
+            ],
+            ')': [
+                [0,0,1,0,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,1,0,0]
+            ],
+            '[': [
+                [0,1,1,1,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,1,1,1,0]
+            ],
+            ']': [
+                [0,1,1,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,1,1,1,0]
+            ],
+            '{': [
+                [0,0,1,1,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [0,1,0,0,0],
+                [0,0,1,1,0]
+            ],
+            '}': [
+                [0,1,1,0,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,0,0,1,0],
+                [0,0,0,1,0],
+                [0,1,1,0,0]
+            ],
+            '<': [
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [1,0,0,0,0],
+                [0,1,0,0,0],
+                [0,0,1,0,0],
+                [0,0,0,1,0]
+            ],
+            '>': [
+                [0,1,0,0,0],
+                [0,0,1,0,0],
+                [0,0,0,1,0],
+                [0,0,0,0,1],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0]
+            ],
+            '"': [
+                [1,0,1,0,0],
+                [1,0,1,0,0],
+                [1,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            "'": [
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '`': [
+                [0,1,0,0,0],
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '~': [
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,1,0,1,0],
+                [1,0,1,0,1],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '@': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,1,1,1],
+                [1,0,1,0,1],
+                [1,0,1,1,1],
+                [1,0,0,0,0],
+                [0,1,1,1,0]
+            ],
+            '#': [
+                [0,1,0,1,0],
+                [1,1,1,1,1],
+                [0,1,0,1,0],
+                [1,1,1,1,1],
+                [0,1,0,1,0],
+                [1,1,1,1,1],
+                [0,1,0,1,0]
+            ],
+            '$': [
+                [0,1,1,1,0],
+                [1,0,0,0,1],
+                [1,0,1,0,0],
+                [0,1,1,1,0],
+                [0,0,1,0,1],
+                [1,0,0,0,1],
+                [0,1,1,1,0]
+            ],
+            '%': [
+                [1,0,0,0,1],
+                [0,0,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [0,0,1,0,0],
+                [0,1,0,0,0],
+                [1,0,0,0,1]
+            ],
+            '^': [
+                [0,0,1,0,0],
+                [0,1,0,1,0],
+                [1,0,0,0,1],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]
+            ],
+            '&': [
+                [0,1,1,0,0],
+                [1,0,0,1,0],
+                [1,0,0,1,0],
+                [0,1,1,0,0],
+                [1,0,1,0,1],
+                [1,0,0,1,0],
+                [0,1,1,1,0]
+            ],
+            '*': [
+                [0,0,0,0,0],
+                [0,1,0,1,0],
+                [0,0,1,0,0],
+                [1,1,1,1,1],
+                [0,0,1,0,0],
+                [0,1,0,1,0],
+                [0,0,0,0,0]
+            ]
+        };
+
+        // DOM elements
+        const textInput = document.getElementById('textInput');
+        const zoomSlider = document.getElementById('zoomSlider');
+        const zoomValue = document.getElementById('zoomValue');
+        const pixelDensitySlider = document.getElementById('pixelDensitySlider');
+        const pixelDensityValue = document.getElementById('pixelDensityValue');
+        const charSpacingSlider = document.getElementById('charSpacingSlider');
+        const charSpacingValue = document.getElementById('charSpacingValue');
+        const lineHeightSlider = document.getElementById('lineHeightSlider');
+        const lineHeightValue = document.getElementById('lineHeightValue');
+        const textColorPicker = document.getElementById('textColor');
+        const bgColorPicker = document.getElementById('bgColor');
+        const gridToggle = document.getElementById('gridToggle');
+        const animationToggle = document.getElementById('animationToggle');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const invertBtn = document.getElementById('invertBtn');
+        const randomColorBtn = document.getElementById('randomColorBtn');
+        const savePngBtn = document.getElementById('savePngBtn');
+        const asciiBtn = document.getElementById('asciiBtn');
+        const copyAsciiBtn = document.getElementById('copyAsciiBtn');
+        const pixelGrid = document.getElementById('pixelGrid');
+        const copyNotification = document.getElementById('copyNotification');
+        const asciiOutput = document.getElementById('asciiOutput');
+        const asciiRepresentation = document.getElementById('asciiRepresentation');
+
+        // Set initial values
+        pixelGrid.style.setProperty('--pixel-size', `${zoomSlider.value}px`);
+        document.documentElement.style.setProperty('--text-color', textColorPicker.value);
+        document.documentElement.style.setProperty('--bg-color', bgColorPicker.value);
+
+        // Update zoom display and CSS variable
+        zoomSlider.addEventListener('input', () => {
+            const zoom = zoomSlider.value;
+            zoomValue.textContent = `${zoom}x`;
+            updatePixelSize();
+        });
+
+        // Update pixel density display
+        pixelDensitySlider.addEventListener('input', () => {
+            const density = pixelDensitySlider.value;
+            pixelDensityValue.textContent = `${density}x`;
+        });
+
+        // Update character spacing display
+        charSpacingSlider.addEventListener('input', () => {
+            const spacing = charSpacingSlider.value;
+            charSpacingValue.textContent = spacing;
+        });
+
+        // Update line height display
+        lineHeightSlider.addEventListener('input', () => {
+            const height = lineHeightSlider.value;
+            lineHeightValue.textContent = height;
+        });
+
+        // Update pixel size based on zoom
+        function updatePixelSize() {
+            const zoom = parseInt(zoomSlider.value);
+            pixelGrid.style.setProperty('--pixel-size', `${zoom}px`);
+        }
+
+        // Update text color
+        textColorPicker.addEventListener('input', () => {
+            const color = textColorPicker.value;
+            document.documentElement.style.setProperty('--text-color', color);
+        });
+
+        // Update background color
+        bgColorPicker.addEventListener('input', () => {
+            const color = bgColorPicker.value;
+            document.documentElement.style.setProperty('--bg-color', color);
+        });
+
+        // Toggle grid lines
+        gridToggle.addEventListener('change', () => {
+            if (gridToggle.checked) {
+                pixelGrid.style.gap = '1px';
+            } else {
+                pixelGrid.style.gap = '0';
+            }
+        });
+
+        // Show copy notification
+        function showCopyNotification(message = "Image saved!") {
+            copyNotification.textContent = message;
+            copyNotification.classList.add('show');
+            setTimeout(() => {
+                copyNotification.classList.remove('show');
+            }, 2000);
+        }
+
+        // Generate random color
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // Generate pixel text
+        function generatePixelText() {
+            const text = textInput.value.toUpperCase();
+            const density = parseInt(pixelDensitySlider.value);
+            const charSpacing = parseInt(charSpacingSlider.value);
+            const lineHeight = parseInt(lineHeightSlider.value);
+            const animate = animationToggle.checked;
+            
+            // Clear the grid
+            pixelGrid.innerHTML = '';
+            
+            if (!text) return;
+            
+            // Split text into lines
+            const lines = text.split('\n');
+            
+            // Calculate grid dimensions
+            const charWidth = 5 * density;  // Width of each character in pixels
+            const charHeight = 7 * density; // Height of each character in pixels
+            const spacing = charSpacing * density; // Space between characters
+            const lineSpacing = lineHeight * density; // Space between lines
+            
+            let maxLineWidth = 0;
+            const lineData = [];
+            
+            // Process each line
+            for (const line of lines) {
+                const lineWidth = line.length * (charWidth + spacing) - spacing;
+                maxLineWidth = Math.max(maxLineWidth, lineWidth);
+                
+                const linePixels = [];
+                for (let row = 0; row < charHeight; row++) {
+                    for (let col = 0; col < lineWidth; col++) {
+                        // Determine which character this pixel belongs to
+                        const charIndex = Math.floor(col / (charWidth + spacing));
+                        const charCol = Math.floor((col % (charWidth + spacing)) / density);
+                        
+                        // If this is a spacing column, leave it empty
+                        if (col % (charWidth + spacing) >= charWidth) {
+                            linePixels.push(0);
+                            continue;
+                        }
+                        
+                        // Get the character
+                        if (charIndex < line.length) {
+                            const char = line[charIndex];
+                            const charData = pixelAlphabet[char] || pixelAlphabet[' '];
+                            const densityRow = Math.floor(row / density);
+                            
+                            // If this pixel should be filled
+                            if (densityRow < charData.length && charData[densityRow][charCol] === 1) {
+                                linePixels.push(1);
+                            } else {
+                                linePixels.push(0);
+                            }
+                        } else {
+                            linePixels.push(0);
+                        }
+                    }
+                }
+                lineData.push(linePixels);
+            }
+            
+            // Calculate total grid dimensions
+            const gridWidth = maxLineWidth;
+            const gridHeight = lines.length * charHeight + (lines.length - 1) * lineSpacing;
+            
+            // Set grid dimensions
+            pixelGrid.style.gridTemplateColumns = `repeat(${gridWidth}, var(--pixel-size))`;
+            
+            // Create pixels
+            let pixelIndex = 0;
+            for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+                // Add line pixels
+                for (let i = 0; i < lineData[lineIndex].length; i++) {
+                    const pixel = document.createElement('div');
+                    pixel.className = 'pixel';
+                    
+                    if (lineData[lineIndex][i] === 1) {
+                        pixel.classList.add('filled');
+                    }
+                    
+                    if (animate) {
+                        pixel.style.animationDelay = `${pixelIndex * 0.01}s`;
+                    } else {
+                        pixel.style.opacity = '1';
+                    }
+                    
+                    pixelGrid.appendChild(pixel);
+                    pixelIndex++;
+                }
+                
+                // Add line spacing
+                if (lineIndex < lines.length - 1) {
+                    for (let i = 0; i < lineSpacing; i++) {
+                        const pixel = document.createElement('div');
+                        pixel.className = 'pixel';
+                        pixel.style.opacity = '1';
+                        pixelGrid.appendChild(pixel);
+                        pixelIndex++;
+                    }
+                }
+            }
+        }
+
+        // Clear the grid and input
+        function clearGrid() {
+            textInput.value = '';
+            pixelGrid.innerHTML = '';
+            asciiOutput.style.display = 'none';
+        }
+
+        // Invert colors
+        function invertColors() {
+            const textColor = textColorPicker.value;
+            const bgColor = bgColorPicker.value;
+            
+            textColorPicker.value = bgColor;
+            bgColorPicker.value = textColor;
+            
+            document.documentElement.style.setProperty('--text-color', bgColor);
+            document.documentElement.style.setProperty('--bg-color', textColor);
+        }
+
+        // Random colors
+        function randomColors() {
+            const textColor = getRandomColor();
+            const bgColor = getRandomColor();
+            
+            textColorPicker.value = textColor;
+            bgColorPicker.value = bgColor;
+            
+            document.documentElement.style.setProperty('--text-color', textColor);
+            document.documentElement.style.setProperty('--bg-color', bgColor);
+        }
+
+        // Save as PNG
+        function saveAsPng() {
+            const text = textInput.value.toUpperCase();
+            if (!text) {
+                return;
+            }
+            
+            const density = parseInt(pixelDensitySlider.value);
+            const charSpacing = parseInt(charSpacingSlider.value);
+            const lineHeight = parseInt(lineHeightSlider.value);
+            
+            // Split text into lines
+            const lines = text.split('\n');
+            
+            // Calculate grid dimensions
+            const charWidth = 5 * density;
+            const charHeight = 7 * density;
+            const spacing = charSpacing * density;
+            const lineSpacing = lineHeight * density;
+            
+            let maxLineWidth = 0;
+            
+            // Calculate max line width
+            for (const line of lines) {
+                const lineWidth = line.length * (charWidth + spacing) - spacing;
+                maxLineWidth = Math.max(maxLineWidth, lineWidth);
+            }
+            
+            // Calculate total grid dimensions
+            const gridWidth = maxLineWidth;
+            const gridHeight = lines.length * charHeight + (lines.length - 1) * lineSpacing;
+            
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = gridWidth;
+            canvas.height = gridHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Get colors
+            const textColor = textColorPicker.value;
+            const bgColor = bgColorPicker.value;
+            
+            // Fill background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw pixels
+            ctx.fillStyle = textColor;
+            for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+                const line = lines[lineIndex];
+                const lineWidth = line.length * (charWidth + spacing) - spacing;
+                const yOffset = lineIndex * (charHeight + lineSpacing);
+                
+                for (let row = 0; row < charHeight; row++) {
+                    for (let col = 0; col < lineWidth; col++) {
+                        // Determine which character this pixel belongs to
+                        const charIndex = Math.floor(col / (charWidth + spacing));
+                        const charCol = Math.floor((col % (charWidth + spacing)) / density);
+                        
+                        // If this is a spacing column, skip
+                        if (col % (charWidth + spacing) >= charWidth) {
+                            continue;
+                        }
+                        
+                        // Get the character
+                        if (charIndex < line.length) {
+                            const char = line[charIndex];
+                            const charData = pixelAlphabet[char] || pixelAlphabet[' '];
+                            const densityRow = Math.floor(row / density);
+                            
+                            // If this pixel should be filled
+                            if (densityRow < charData.length && charData[densityRow][charCol] === 1) {
+                                ctx.fillRect(col, yOffset + row, 1, 1);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Convert to data URL and trigger download
+            const dataUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'peachy-pixel-text.png';
+            link.href = dataUrl;
+            link.click();
+            
+            showCopyNotification();
+        }
+
+        // Export as ASCII
+        function exportAsAscii() {
+            const text = textInput.value.toUpperCase();
+            if (!text) {
+                return;
+            }
+            
+            // Split text into lines
+            const lines = text.split('\n');
+            
+            let asciiArt = '';
+            
+            // Process each line
+            for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+                const line = lines[lineIndex];
+                
+                // Process each row of the character
+                for (let row = 0; row < 7; row++) {
+                    for (let charIndex = 0; charIndex < line.length; charIndex++) {
+                        const char = line[charIndex];
+                        const charData = pixelAlphabet[char] || pixelAlphabet[' '];
+                        
+                        // Add character spacing
+                        if (charIndex > 0) {
+                            asciiArt += ' ';
+                        }
+                        
+                        // Process each column of the character
+                        for (let col = 0; col < 5; col++) {
+                            if (charData[row][col] === 1) {
+                                asciiArt += '█';
+                            } else {
+                                asciiArt += ' ';
+                            }
+                        }
+                    }
+                    asciiArt += '\n';
+                }
+                
+                // Add line spacing
+                if (lineIndex < lines.length - 1) {
+                    asciiArt += '\n';
+                }
+            }
+            
+            // Display ASCII art
+            asciiRepresentation.textContent = asciiArt;
+            asciiOutput.style.display = 'block';
+        }
+
+        // Copy ASCII to clipboard
+        function copyAsciiToClipboard() {
+            const text = asciiRepresentation.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyNotification("ASCII copied to clipboard!");
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        // Event listeners
+        generateBtn.addEventListener('click', generatePixelText);
+        textInput.addEventListener('input', generatePixelText);
+        clearBtn.addEventListener('click', clearGrid);
+        invertBtn.addEventListener('click', invertColors);
+        randomColorBtn.addEventListener('click', randomColors);
+        savePngBtn.addEventListener('click', saveAsPng);
+        asciiBtn.addEventListener('click', exportAsAscii);
+        copyAsciiBtn.addEventListener('click', copyAsciiToClipboard);
+
+        // Initialize
+        updatePixelSize();
+    </script>
+</body>
+</html>
