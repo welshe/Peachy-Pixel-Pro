@@ -1,3 +1,4 @@
+Developed for WPLACE.LIVE so you can know how to write text/characters.
 Version 1 Release - 26/09/2025
     Text Shadow Effect
     Gradient Text
