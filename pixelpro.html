@@ -5,15 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peachy Pixel Pro</title>
     <style>
+        :root {
+            --primary-color: #FF9E80;
+            --secondary-color: #4CAF50;
+            --tertiary-color: #2196F3;
+            --dark-bg: #222;
+            --medium-bg: #333;
+            --light-bg: #444;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Courier New', monospace;
-            background-color: #222;
+            background-color: var(--dark-bg);
             color: #eee;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         .container {
@@ -24,7 +38,7 @@
         h1 {
             text-align: center;
             margin-bottom: 30px;
-            color: #FF9E80; /* Peach color */
+            color: var(--primary-color);
             text-shadow: 0 0 10px rgba(255, 158, 128, 0.5);
             font-size: 2.5rem;
         }
@@ -35,7 +49,7 @@
             gap: 15px;
             margin-bottom: 30px;
             padding: 20px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             justify-content: center;
@@ -45,6 +59,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            min-width: 150px;
         }
 
         label {
@@ -54,34 +69,34 @@
 
         input[type="text"] {
             padding: 12px;
-            border: 2px solid #444;
+            border: 2px solid var(--light-bg);
             border-radius: 6px;
-            background-color: #444;
+            background-color: var(--light-bg);
             color: #fff;
             font-size: 16px;
-            width: 250px;
+            width: 100%;
             transition: border-color 0.3s;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #FF9E80;
+            border-color: var(--primary-color);
         }
 
         input[type="range"] {
-            width: 150px;
+            width: 100%;
         }
 
         .value-display {
             font-size: 14px;
-            color: #FF9E80;
+            color: var(--primary-color);
             text-align: center;
             font-weight: bold;
         }
 
         button {
             padding: 12px 18px;
-            background-color: #FF9E80;
+            background-color: var(--primary-color);
             color: #333;
             border: none;
             border-radius: 6px;
@@ -90,6 +105,7 @@
             font-weight: bold;
             transition: all 0.3s;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            width: 100%;
         }
 
         button:hover {
@@ -104,7 +120,7 @@
         }
 
         .secondary-btn {
-            background-color: #4CAF50;
+            background-color: var(--secondary-color);
             color: white;
         }
 
@@ -113,7 +129,7 @@
         }
 
         .tertiary-btn {
-            background-color: #2196F3;
+            background-color: var(--tertiary-color);
             color: white;
         }
 
@@ -154,10 +170,11 @@
             margin-top: 20px;
             overflow: auto;
             padding: 20px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             position: relative;
+            max-width: 100%;
         }
 
         .pixel-grid {
@@ -173,7 +190,7 @@
         .pixel {
             width: var(--pixel-size);
             height: var(--pixel-size);
-            background-color: var(--bg-color, #444);
+            background-color: var(--bg-color, var(--light-bg));
             border-radius: 1px;
             transition: background-color 0.2s;
             opacity: 0;
@@ -202,7 +219,7 @@
         }
 
         .pixel.filled {
-            background-color: var(--text-color, #FF9E80);
+            background-color: var(--text-color, var(--primary-color));
             box-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
         }
 
@@ -237,7 +254,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #FF9E80;
+            background-color: var(--primary-color);
             color: #333;
             padding: 10px 20px;
             border-radius: 6px;
@@ -278,7 +295,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #444;
+            background-color: var(--light-bg);
             transition: .4s;
             border-radius: 24px;
         }
@@ -296,7 +313,7 @@
         }
 
         input:checked + .slider {
-            background-color: #FF9E80;
+            background-color: var(--primary-color);
         }
 
         input:checked + .slider:before {
@@ -310,19 +327,20 @@
         .ascii-output {
             margin-top: 20px;
             padding: 15px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             display: none;
+            width: 100%;
         }
 
         .ascii-output h3 {
             margin-top: 0;
-            color: #FF9E80;
+            color: var(--primary-color);
         }
 
         .ascii-output pre {
-            background-color: #444;
+            background-color: var(--light-bg);
             padding: 15px;
             border-radius: 6px;
             overflow: auto;
@@ -339,7 +357,7 @@
             gap: 10px;
             margin-top: 20px;
             padding: 15px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
@@ -347,7 +365,7 @@
         .gallery-item {
             width: 80px;
             height: 80px;
-            background-color: #444;
+            background-color: var(--light-bg);
             border-radius: 6px;
             display: flex;
             align-items: center;
@@ -366,7 +384,7 @@
         .history-panel {
             margin-top: 20px;
             padding: 15px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             display: none;
@@ -374,12 +392,12 @@
 
         .history-panel h3 {
             margin-top: 0;
-            color: #FF9E80;
+            color: var(--primary-color);
         }
 
         .history-item {
             padding: 10px;
-            background-color: #444;
+            background-color: var(--light-bg);
             border-radius: 6px;
             margin-bottom: 10px;
             display: flex;
@@ -395,7 +413,7 @@
         .custom-char-editor {
             margin-top: 20px;
             padding: 15px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             display: none;
@@ -403,7 +421,7 @@
 
         .custom-char-editor h3 {
             margin-top: 0;
-            color: #FF9E80;
+            color: var(--primary-color);
         }
 
         .char-grid {
@@ -420,13 +438,13 @@
         .char-pixel {
             width: 30px;
             height: 30px;
-            background-color: #444;
+            background-color: var(--light-bg);
             border-radius: 2px;
             cursor: pointer;
         }
 
         .char-pixel.filled {
-            background-color: #FF9E80;
+            background-color: var(--primary-color);
         }
 
         .fullscreen {
@@ -435,7 +453,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #222;
+            background-color: var(--dark-bg);
             z-index: 2000;
             display: flex;
             flex-direction: column;
@@ -464,28 +482,32 @@
 
         .tab-container {
             margin-top: 20px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 100%;
         }
 
         .tab-buttons {
             display: flex;
-            border-bottom: 1px solid #444;
+            border-bottom: 1px solid var(--light-bg);
+            flex-wrap: wrap;
         }
 
         .tab-button {
             padding: 10px 20px;
-            background-color: #333;
+            background-color: var(--medium-bg);
             color: #aaa;
             border: none;
             cursor: pointer;
             transition: all 0.3s;
+            flex: 1;
+            min-width: 120px;
         }
 
         .tab-button.active {
-            background-color: #444;
-            color: #FF9E80;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
         }
 
         .tab-content {
@@ -499,7 +521,7 @@
 
         .palette-grid {
             display: grid;
-            grid-template-columns: repeat(8, 40px);
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
             gap: 10px;
             margin-top: 15px;
         }
@@ -520,7 +542,7 @@
             width: 100%;
             min-height: 150px;
             padding: 10px;
-            background-color: #444;
+            background-color: var(--light-bg);
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -536,7 +558,7 @@
         }
 
         .batch-item {
-            background-color: #444;
+            background-color: var(--light-bg);
             border-radius: 6px;
             padding: 10px;
             text-align: center;
@@ -544,6 +566,121 @@
 
         .batch-item .pixel-grid {
             margin-bottom: 10px;
+        }
+
+        /* New styles for improvements and features */
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .controls {
+                padding: 15px;
+            }
+            
+            .input-group {
+                min-width: 100%;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                min-width: 100%;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Color palette */
+        .color-palette {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+        }
+
+        .color-palette h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        /* Text shadow controls */
+        .shadow-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .shadow-control {
+            flex: 1;
+            min-width: 80px;
+        }
+
+        /* Character spacing visualization */
+        .spacing-visualization {
+            height: 20px;
+            background-color: var(--light-bg);
+            border-radius: 4px;
+            margin-top: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spacing-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.3s;
+        }
+
+        /* Auto-save indicator */
+        .auto-save-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .save-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .save-status.saving {
+            opacity: 1;
+            animation: pulse 1s infinite;
+        }
+
+        /* Error message */
+        .error-message {
+            color: #ff5252;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Feature highlights */
+        .feature-highlight {
+            background-color: rgba(255, 158, 128, 0.1);
+            border-left: 3px solid var(--primary-color);
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
         }
     </style>
 </head>
@@ -554,13 +691,14 @@
         <div class="controls">
             <div class="input-group">
                 <label for="textInput">Enter Text:</label>
-                <input type="text" id="textInput" placeholder="Type something..." value="">
+                <input type="text" id="textInput" placeholder="Type something..." value="HELLO" maxlength="50">
+                <div class="error-message" id="textError">Text is too long! Maximum 50 characters.</div>
             </div>
             
             <div class="input-group">
                 <label for="zoomSlider">Zoom:</label>
-                <input type="range" id="zoomSlider" min="1" max="10" value="1">
-                <div class="value-display" id="zoomValue">1x</div>
+                <input type="range" id="zoomSlider" min="1" max="10" value="3">
+                <div class="value-display" id="zoomValue">3x</div>
             </div>
             
             <div class="input-group">
@@ -573,6 +711,9 @@
                 <label for="charSpacingSlider">Character Spacing:</label>
                 <input type="range" id="charSpacingSlider" min="0" max="5" value="1">
                 <div class="value-display" id="charSpacingValue">1</div>
+                <div class="spacing-visualization">
+                    <div class="spacing-bar" id="spacingBar"></div>
+                </div>
             </div>
             
             <div class="input-group">
@@ -661,6 +802,9 @@
             
             <div class="tab-content active" id="effects-tab">
                 <h3>Text Effects</h3>
+                <div class="feature-highlight">
+                    New: Enhanced text shadow controls for more customization options
+                </div>
                 <div class="controls">
                     <div class="input-group">
                         <label>Text Shadow:</label>
@@ -669,6 +813,33 @@
                                 <input type="checkbox" id="shadowToggle">
                                 <span class="slider"></span>
                             </label>
+                        </div>
+                    </div>
+                    
+                    <div class="shadow-controls">
+                        <div class="input-group shadow-control">
+                            <label for="shadowX">Shadow X:</label>
+                            <input type="range" id="shadowX" min="-10" max="10" value="2">
+                            <div class="value-display" id="shadowXValue">2px</div>
+                        </div>
+                        
+                        <div class="input-group shadow-control">
+                            <label for="shadowY">Shadow Y:</label>
+                            <input type="range" id="shadowY" min="-10" max="10" value="2">
+                            <div class="value-display" id="shadowYValue">2px</div>
+                        </div>
+                        
+                        <div class="input-group shadow-control">
+                            <label for="shadowBlur">Shadow Blur:</label>
+                            <input type="range" id="shadowBlur" min="0" max="20" value="4">
+                            <div class="value-display" id="shadowBlurValue">4px</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Shadow Color:</label>
+                        <div class="color-picker">
+                            <input type="color" id="shadowColor" value="#000000">
                         </div>
                     </div>
                     
@@ -707,6 +878,7 @@
                         <div class="color-picker">
                             <input type="color" id="gradientColor" value="#FF5722">
                         </div>
+                        <div class="gradient-preview" id="gradientPreview"></div>
                     </div>
                     
                     <div class="input-group">
@@ -737,6 +909,12 @@
                     </div>
                     
                     <div class="input-group">
+                        <label>Animation Speed:</label>
+                        <input type="range" id="animationSpeed" min="0.5" max="3" step="0.1" value="1">
+                        <div class="value-display" id="animationSpeedValue">1x</div>
+                    </div>
+                    
+                    <div class="input-group">
                         <label>Background Pattern:</label>
                         <select id="bgPattern">
                             <option value="none">None</option>
@@ -755,6 +933,13 @@
                         </select>
                     </div>
                 </div>
+                
+                <div class="color-palette">
+                    <h4>Color Palette</h4>
+                    <div class="palette-grid" id="colorPalette">
+                        <!-- Color palette will be generated dynamically -->
+                    </div>
+                </div>
             </div>
             
             <div class="tab-content" id="gallery-tab">
@@ -766,6 +951,10 @@
             
             <div class="tab-content" id="history-tab">
                 <h3>Text History</h3>
+                <div class="auto-save-indicator">
+                    <div class="save-status" id="saveStatus"></div>
+                    <span id="autoSaveText">Auto-save: Off</span>
+                </div>
                 <div class="history-panel" id="historyPanel">
                     <!-- History items will be added dynamically -->
                 </div>
@@ -790,6 +979,9 @@
             
             <div class="tab-content" id="advanced-tab">
                 <h3>Advanced Features</h3>
+                <div class="feature-highlight">
+                    New: Batch processing allows you to generate multiple texts at once
+                </div>
                 <div class="controls">
                     <div class="input-group">
                         <label>&nbsp;</label>
@@ -1462,6 +1654,14 @@
             ]
         };
 
+        // Color palette with predefined colors
+        const colorPalette = [
+            '#FF9E80', '#FF5722', '#E91E63', '#9C27B0', '#673AB7',
+            '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688',
+            '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107',
+            '#FF9800', '#795548', '#9E9E9E', '#607D8B', '#000000'
+        ];
+
         // Gallery items
         const galleryItems = [
             { name: "Heart", data: [[0,1,1,0,0],[1,1,1,1,0],[1,1,1,1,1],[1,1,1,1,1],[0,1,1,1,0],[0,0,1,1,0],[0,0,0,1,0]] },
@@ -1487,13 +1687,23 @@
         const gridToggle = document.getElementById('gridToggle');
         const animationToggle = document.getElementById('animationToggle');
         const shadowToggle = document.getElementById('shadowToggle');
+        const shadowX = document.getElementById('shadowX');
+        const shadowY = document.getElementById('shadowY');
+        const shadowBlur = document.getElementById('shadowBlur');
+        const shadowXValue = document.getElementById('shadowXValue');
+        const shadowYValue = document.getElementById('shadowYValue');
+        const shadowBlurValue = document.getElementById('shadowBlurValue');
+        const shadowColor = document.getElementById('shadowColor');
         const rotationSelect = document.getElementById('rotationSelect');
         const mirrorSelect = document.getElementById('mirrorSelect');
         const gradientToggle = document.getElementById('gradientToggle');
         const gradientColor = document.getElementById('gradientColor');
+        const gradientPreview = document.getElementById('gradientPreview');
         const outlineToggle = document.getElementById('outlineToggle');
         const outlineColor = document.getElementById('outlineColor');
         const animationType = document.getElementById('animationType');
+        const animationSpeed = document.getElementById('animationSpeed');
+        const animationSpeedValue = document.getElementById('animationSpeedValue');
         const bgPattern = document.getElementById('bgPattern');
         const textAlign = document.getElementById('textAlign');
         const generateBtn = document.getElementById('generateBtn');
@@ -1523,9 +1733,11 @@
         const batchProcessSection = document.getElementById('batchProcessSection');
         const batchTexts = document.getElementById('batchTexts');
         const batchResults = document.getElementById('batchResults');
-        const gradientPreview = document.createElement('div');
-        gradientPreview.className = 'gradient-preview';
-        document.getElementById('gradientColor').parentNode.appendChild(gradientPreview);
+        const colorPaletteContainer = document.getElementById('colorPalette');
+        const spacingBar = document.getElementById('spacingBar');
+        const saveStatus = document.getElementById('saveStatus');
+        const autoSaveText = document.getElementById('autoSaveText');
+        const textError = document.getElementById('textError');
 
         // Tab elements
         const tabButtons = document.querySelectorAll('.tab-button');
@@ -1542,6 +1754,23 @@
         // Initialize history
         let history = [];
         const maxHistory = 10;
+
+        // Initialize color palette
+        function initColorPalette() {
+            colorPaletteContainer.innerHTML = '';
+            colorPalette.forEach(color => {
+                const colorElement = document.createElement('div');
+                colorElement.className = 'palette-color';
+                colorElement.style.backgroundColor = color;
+                colorElement.title = color;
+                colorElement.addEventListener('click', () => {
+                    textColorPicker.value = color;
+                    document.documentElement.style.setProperty('--text-color', color);
+                    updateGradientPreview();
+                });
+                colorPaletteContainer.appendChild(colorElement);
+            });
+        }
 
         // Initialize tab functionality
         tabButtons.forEach(button => {
@@ -1657,6 +1886,8 @@
         charSpacingSlider.addEventListener('input', () => {
             const spacing = charSpacingSlider.value;
             charSpacingValue.textContent = spacing;
+            // Update spacing visualization
+            spacingBar.style.width = `${spacing * 20}%`;
         });
 
         // Update line height display
@@ -1665,16 +1896,33 @@
             lineHeightValue.textContent = height;
         });
 
-        // Update gradient preview
-        gradientColor.addEventListener('input', () => {
-            updateGradientPreview();
+        // Update shadow controls
+        shadowX.addEventListener('input', () => {
+            shadowXValue.textContent = `${shadowX.value}px`;
         });
 
+        shadowY.addEventListener('input', () => {
+            shadowYValue.textContent = `${shadowY.value}px`;
+        });
+
+        shadowBlur.addEventListener('input', () => {
+            shadowBlurValue.textContent = `${shadowBlur.value}px`;
+        });
+
+        // Update animation speed
+        animationSpeed.addEventListener('input', () => {
+            animationSpeedValue.textContent = `${animationSpeed.value}x`;
+        });
+
+        // Update gradient preview
         function updateGradientPreview() {
             const color1 = textColorPicker.value;
             const color2 = gradientColor.value;
             gradientPreview.style.background = `linear-gradient(to right, ${color1}, ${color2})`;
         }
+
+        textColorPicker.addEventListener('input', updateGradientPreview);
+        gradientColor.addEventListener('input', updateGradientPreview);
 
         // Update pixel size based on zoom
         function updatePixelSize() {
@@ -1723,19 +1971,59 @@
             return color;
         }
 
+        // Validate text input
+        function validateTextInput() {
+            const text = textInput.value;
+            if (text.length > 50) {
+                textError.style.display = 'block';
+                return false;
+            } else {
+                textError.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Auto-save functionality
+        function autoSave() {
+            if (autoSaveToggle.checked) {
+                saveStatus.classList.add('saving');
+                setTimeout(() => {
+                    saveToLocalStorage();
+                    saveStatus.classList.remove('saving');
+                }, 500);
+            }
+        }
+
+        // Update auto-save text
+        autoSaveToggle.addEventListener('change', () => {
+            if (autoSaveToggle.checked) {
+                autoSaveText.textContent = 'Auto-save: On';
+                autoSave();
+            } else {
+                autoSaveText.textContent = 'Auto-save: Off';
+            }
+        });
+
         // Generate pixel text
         function generatePixelText() {
+            if (!validateTextInput()) return;
+            
             const text = textInput.value.toUpperCase();
             const density = parseInt(pixelDensitySlider.value);
             const charSpacing = parseInt(charSpacingSlider.value);
             const lineHeight = parseInt(lineHeightSlider.value);
             const animate = animationToggle.checked;
             const shadow = shadowToggle.checked;
+            const shadowXVal = shadowX.value;
+            const shadowYVal = shadowY.value;
+            const shadowBlurVal = shadowBlur.value;
+            const shadowColorVal = shadowColor.value;
             const rotation = parseInt(rotationSelect.value);
             const mirror = mirrorSelect.value;
             const gradient = gradientToggle.checked;
             const outline = outlineToggle.checked;
             const animType = animationType.value;
+            const animSpeed = parseFloat(animationSpeed.value);
             const pattern = bgPattern.value;
             const align = textAlign.value;
             
@@ -1836,6 +2124,8 @@
             // Apply background pattern
             if (pattern !== 'none') {
                 applyBackgroundPattern(pattern, gridWidth, gridHeight);
+            } else {
+                pixelGrid.style.backgroundImage = 'none';
             }
             
             // Create pixels
@@ -1866,12 +2156,14 @@
                         
                         // Apply shadow
                         if (shadow) {
-                            pixel.style.boxShadow = `2px 2px 4px rgba(0, 0, 0, 0.5)`;
+                            pixel.style.boxShadow = `${shadowXVal}px ${shadowYVal}px ${shadowBlurVal}px ${shadowColorVal}`;
                         }
                         
                         // Apply animation type
                         if (animType !== 'none') {
                             pixel.classList.add(animType);
+                            // Apply animation speed
+                            pixel.style.animationDuration = `${1 / animSpeed}s`;
                         }
                     }
                     
@@ -1913,9 +2205,7 @@
             }
             
             // Auto-save if enabled
-            if (autoSaveToggle.checked) {
-                saveToLocalStorage();
-            }
+            autoSave();
         }
 
         // Apply background pattern
@@ -2125,6 +2415,10 @@
             const charSpacing = parseInt(charSpacingSlider.value);
             const lineHeight = parseInt(lineHeightSlider.value);
             const shadow = shadowToggle.checked;
+            const shadowXVal = shadowX.value;
+            const shadowYVal = shadowY.value;
+            const shadowBlurVal = shadowBlur.value;
+            const shadowColorVal = shadowColor.value;
             const rotation = parseInt(rotationSelect.value);
             const mirror = mirrorSelect.value;
             const gradient = gradientToggle.checked;
@@ -2153,7 +2447,7 @@
             const gridHeight = lines.length * charHeight + (lines.length - 1) * lineSpacing;
             
             // Create canvas
-            const canvas = document.createElement('canvas');
+            let canvas = document.createElement('canvas');
             canvas.width = gridWidth;
             canvas.height = gridHeight;
             const ctx = canvas.getContext('2d');
@@ -2378,10 +2672,10 @@
                 
                 // Apply shadow
                 if (shadow) {
-                    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-                    ctx.shadowBlur = 2;
-                    ctx.shadowOffsetX = 2;
-                    ctx.shadowOffsetY = 2;
+                    ctx.shadowColor = shadowColorVal;
+                    ctx.shadowBlur = shadowBlurVal;
+                    ctx.shadowOffsetX = shadowXVal;
+                    ctx.shadowOffsetY = shadowYVal;
                     ctx.fillRect(pixel.x, pixel.y, 1, 1);
                     ctx.shadowColor = 'transparent';
                 }
@@ -2428,6 +2722,10 @@
             const charSpacing = parseInt(charSpacingSlider.value);
             const lineHeight = parseInt(lineHeightSlider.value);
             const shadow = shadowToggle.checked;
+            const shadowXVal = shadowX.value;
+            const shadowYVal = shadowY.value;
+            const shadowBlurVal = shadowBlur.value;
+            const shadowColorVal = shadowColor.value;
             const rotation = parseInt(rotationSelect.value);
             const mirror = mirrorSelect.value;
             const gradient = gradientToggle.checked;
@@ -2670,7 +2968,7 @@
                 
                 // Apply shadow
                 if (shadow) {
-                    svg += ` filter="drop-shadow(2px 2px 4px rgba(0,0,0,0.5))"`;
+                    svg += ` filter="drop-shadow(${shadowXVal}px ${shadowYVal}px ${shadowBlurVal}px ${shadowColorVal})"`;
                 }
                 
                 svg += `/>`;
@@ -2698,7 +2996,7 @@
                     }
                     
                     if (shadow) {
-                        svg += ` filter="drop-shadow(2px 2px 4px rgba(0,0,0,0.5))"`;
+                        svg += ` filter="drop-shadow(${shadowXVal}px ${shadowYVal}px ${shadowBlurVal}px ${shadowColorVal})"`;
                     }
                     
                     svg += `/>`;
@@ -2730,6 +3028,10 @@
                 charSpacing: charSpacingSlider.value,
                 lineHeight: lineHeightSlider.value,
                 shadow: shadowToggle.checked,
+                shadowX: shadowX.value,
+                shadowY: shadowY.value,
+                shadowBlur: shadowBlur.value,
+                shadowColor: shadowColor.value,
                 rotation: rotationSelect.value,
                 mirror: mirrorSelect.value,
                 gradient: gradientToggle.checked,
@@ -2737,6 +3039,7 @@
                 outline: outlineToggle.checked,
                 outlineColor: outlineColor.value,
                 animationType: animationType.value,
+                animationSpeed: animationSpeed.value,
                 bgPattern: bgPattern.value,
                 textAlign: textAlign.value,
                 customCharacters: customCharacters
@@ -2775,6 +3078,10 @@
                         charSpacingSlider.value = data.charSpacing || 1;
                         lineHeightSlider.value = data.lineHeight || 0;
                         shadowToggle.checked = data.shadow || false;
+                        shadowX.value = data.shadowX || 2;
+                        shadowY.value = data.shadowY || 2;
+                        shadowBlur.value = data.shadowBlur || 4;
+                        shadowColor.value = data.shadowColor || '#000000';
                         rotationSelect.value = data.rotation || 0;
                         mirrorSelect.value = data.mirror || 'none';
                         gradientToggle.checked = data.gradient || false;
@@ -2782,6 +3089,7 @@
                         outlineToggle.checked = data.outline || false;
                         outlineColor.value = data.outlineColor || '#FFFFFF';
                         animationType.value = data.animationType || 'none';
+                        animationSpeed.value = data.animationSpeed || 1;
                         bgPattern.value = data.bgPattern || 'none';
                         textAlign.value = data.textAlign || 'left';
                         
@@ -2789,6 +3097,10 @@
                         pixelDensityValue.textContent = `${pixelDensitySlider.value}x`;
                         charSpacingValue.textContent = charSpacingSlider.value;
                         lineHeightValue.textContent = lineHeightSlider.value;
+                        shadowXValue.textContent = `${shadowX.value}px`;
+                        shadowYValue.textContent = `${shadowY.value}px`;
+                        shadowBlurValue.textContent = `${shadowBlur.value}px`;
+                        animationSpeedValue.textContent = `${animationSpeed.value}x`;
                         updateGradientPreview();
                         
                         // Load custom characters
@@ -2822,6 +3134,10 @@
                 charSpacing: charSpacingSlider.value,
                 lineHeight: lineHeightSlider.value,
                 shadow: shadowToggle.checked,
+                shadowX: shadowX.value,
+                shadowY: shadowY.value,
+                shadowBlur: shadowBlur.value,
+                shadowColor: shadowColor.value,
                 rotation: rotationSelect.value,
                 mirror: mirrorSelect.value,
                 gradient: gradientToggle.checked,
@@ -2829,6 +3145,7 @@
                 outline: outlineToggle.checked,
                 outlineColor: outlineColor.value,
                 animationType: animationType.value,
+                animationSpeed: animationSpeed.value,
                 bgPattern: bgPattern.value,
                 textAlign: textAlign.value,
                 customCharacters: customCharacters,
@@ -2854,6 +3171,10 @@
                     charSpacingSlider.value = data.charSpacing || 1;
                     lineHeightSlider.value = data.lineHeight || 0;
                     shadowToggle.checked = data.shadow || false;
+                    shadowX.value = data.shadowX || 2;
+                    shadowY.value = data.shadowY || 2;
+                    shadowBlur.value = data.shadowBlur || 4;
+                    shadowColor.value = data.shadowColor || '#000000';
                     rotationSelect.value = data.rotation || 0;
                     mirrorSelect.value = data.mirror || 'none';
                     gradientToggle.checked = data.gradient || false;
@@ -2861,6 +3182,7 @@
                     outlineToggle.checked = data.outline || false;
                     outlineColor.value = data.outlineColor || '#FFFFFF';
                     animationType.value = data.animationType || 'none';
+                    animationSpeed.value = data.animationSpeed || 1;
                     bgPattern.value = data.bgPattern || 'none';
                     textAlign.value = data.textAlign || 'left';
                     autoSaveToggle.checked = true;
@@ -2869,6 +3191,10 @@
                     pixelDensityValue.textContent = `${pixelDensitySlider.value}x`;
                     charSpacingValue.textContent = charSpacingSlider.value;
                     lineHeightValue.textContent = lineHeightSlider.value;
+                    shadowXValue.textContent = `${shadowX.value}px`;
+                    shadowYValue.textContent = `${shadowY.value}px`;
+                    shadowBlurValue.textContent = `${shadowBlur.value}px`;
+                    animationSpeedValue.textContent = `${animationSpeed.value}x`;
                     updateGradientPreview();
                     
                     // Load custom characters
@@ -3157,6 +3483,7 @@
         initGallery();
         updateHistoryPanel();
         initCustomCharEditor();
+        initColorPalette();
         updateGradientPreview();
         loadFromLocalStorage();
 
@@ -3196,6 +3523,9 @@
                 toggleFullscreen();
             }
         });
+
+        // Initial generation
+        generatePixelText();
     </script>
 </body>
 </html>
