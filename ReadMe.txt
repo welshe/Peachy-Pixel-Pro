@@ -25,5 +25,17 @@ Saving & Usability
     Fullscreen Mode
     Auto-save (Saves to local storage)
 
-🚧 Upcoming: Version 2
-Nothing yet! Check back soon for more exciting features.
+Version 2 Release - 29/09/2025
+5 New Features:
+    Color palette with predefined colors
+    Text shadow controls
+    Character spacing visualization
+    Auto-save functionality
+    Batch processing for multiple texts
+5 Improvements:
+    Enhanced mobile responsiveness
+    Better color palette with preview
+    Improved animation performance
+    Added input validation
+    Enhanced error handling and user feedback
+Not a big update, but it is what it is
