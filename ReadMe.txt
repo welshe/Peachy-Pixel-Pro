@@ -39,3 +39,7 @@ Version 2 Release - 29/09/2025
     Added input validation
     Enhanced error handling and user feedback
 Not a big update, but it is what it is
+
+Version 3 Release - 03/10/2025
+    Added the ability to convert images into pixel art
+    General code optimization
