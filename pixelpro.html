@@ -188,8 +188,8 @@
         }
 
         .pixel {
-            width: var(--pixel-size);
-            height: var(--pixel-size);
+            width: var(--pixel-size, auto);
+            height: var(--pixel-size, auto);
             background-color: var(--bg-color, var(--light-bg));
             border-radius: 1px;
             transition: background-color 0.2s;
@@ -774,6 +774,22 @@
             <div class="input-group">
                 <label>&nbsp;</label>
                 <button id="randomColorBtn" class="quaternary-btn">Random Colors</button>
+            </div>
+            
+            <div class="input-group">
+                <label for="imageUpload">Upload Image:</label>
+                <input type="file" id="imageUpload" accept="image/*" style="padding: 8px; border-radius: 6px; background-color: var(--light-bg); color: #fff; font-size: 14px; width: 100%;">
+            </div>
+
+            <div class="input-group">
+                <label for="pixelationSlider">Pixelation Level:</label>
+                <input type="range" id="pixelationSlider" min="10" max="150" value="50">
+                <div class="value-display" id="pixelationValue">50</div>
+            </div>
+
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="convertImageBtn" class="senary-btn">Convert Image</button>
             </div>
             
             <div class="input-group">
@@ -1738,6 +1754,12 @@
         const saveStatus = document.getElementById('saveStatus');
         const autoSaveText = document.getElementById('autoSaveText');
         const textError = document.getElementById('textError');
+        
+        // New image conversion elements
+        const imageUpload = document.getElementById('imageUpload');
+        const convertImageBtn = document.getElementById('convertImageBtn');
+        const pixelationSlider = document.getElementById('pixelationSlider');
+        const pixelationValue = document.getElementById('pixelationValue');
 
         // Tab elements
         const tabButtons = document.querySelectorAll('.tab-button');
@@ -1754,6 +1776,9 @@
         // Initialize history
         let history = [];
         const maxHistory = 10;
+        
+        // Global variable to hold the loaded image object
+        let uploadedImage = null;
 
         // Initialize color palette
         function initColorPalette() {
@@ -1913,6 +1938,11 @@
         animationSpeed.addEventListener('input', () => {
             animationSpeedValue.textContent = `${animationSpeed.value}x`;
         });
+        
+        // Update pixelation level display
+        pixelationSlider.addEventListener('input', () => {
+            pixelationValue.textContent = pixelationSlider.value;
+        });
 
         // Update gradient preview
         function updateGradientPreview() {
@@ -2003,10 +2033,87 @@
                 autoSaveText.textContent = 'Auto-save: Off';
             }
         });
+        
+        // --- NEW --- Handle image upload
+        imageUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImage = new Image();
+                    uploadedImage.onload = () => {
+                        showCopyNotification("Image loaded. Click 'Convert Image'.");
+                    };
+                    uploadedImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- NEW --- Convert the loaded image to pixels
+        function convertImageToPixels() {
+            if (!uploadedImage) {
+                showCopyNotification("Please upload an image first!");
+                return;
+            }
+
+            // Clear text input as it's no longer relevant
+            textInput.value = '';
+            
+            const pixelationLevel = parseInt(pixelationSlider.value);
+            
+            // Calculate grid dimensions based on image aspect ratio
+            const aspectRatio = uploadedImage.width / uploadedImage.height;
+            const numCols = pixelationLevel;
+            const numRows = Math.round(numCols / aspectRatio);
+
+            // Clear and reset the grid for image display
+            pixelGrid.innerHTML = '';
+            pixelGrid.style.transform = 'none';
+            pixelGrid.style.width = '100%';
+            pixelGrid.style.height = 'auto';
+            pixelGrid.style.aspectRatio = `${numCols} / ${numRows}`;
+            pixelGrid.style.setProperty('--pixel-size', 'auto');
+            pixelGrid.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+            pixelGrid.style.gap = gridToggle.checked ? '1px' : '0';
+
+            // Create an offscreen canvas to sample colors
+            const canvas = document.createElement('canvas');
+            canvas.width = numCols;
+            canvas.height = numRows;
+            const ctx = canvas.getContext('2d');
+
+            // Draw the image onto the small canvas (this performs the pixelation)
+            ctx.drawImage(uploadedImage, 0, 0, numCols, numRows);
+
+            // Get the color data from the small canvas
+            const imageData = ctx.getImageData(0, 0, numCols, numRows).data;
+
+            // Create the pixels in the grid
+            for (let i = 0; i < imageData.length; i += 4) {
+                const r = imageData[i];
+                const g = imageData[i + 1];
+                const b = imageData[i + 2];
+                const a = imageData[i + 3] / 255;
+
+                const pixel = document.createElement('div');
+                pixel.className = 'pixel';
+                pixel.style.opacity = '1';
+                pixel.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+                
+                pixelGrid.appendChild(pixel);
+            }
+        }
 
         // Generate pixel text
         function generatePixelText() {
             if (!validateTextInput()) return;
+            
+            // Reset styles that might have been set by image conversion
+            pixelGrid.style.width = 'auto';
+            pixelGrid.style.height = 'auto';
+            pixelGrid.style.aspectRatio = 'auto';
+            updatePixelSize();
             
             const text = textInput.value.toUpperCase();
             const density = parseInt(pixelDensitySlider.value);
@@ -2407,7 +2514,34 @@
         // Save as PNG
         function saveAsPng() {
             const text = textInput.value.toUpperCase();
-            if (!text) {
+            if (!text && !uploadedImage) {
+                showCopyNotification("Nothing to save!");
+                return;
+            }
+            
+            // If it's an image conversion, we need a different approach
+            if (uploadedImage && !text) {
+                const numCols = parseInt(pixelGrid.style.gridTemplateColumns.split(' ').length);
+                const numRows = pixelGrid.children.length / numCols;
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = numCols * 10; // Upscale for better quality
+                canvas.height = numRows * 10;
+                const ctx = canvas.getContext('2d');
+                
+                Array.from(pixelGrid.children).forEach((pixel, index) => {
+                    const x = (index % numCols) * 10;
+                    const y = Math.floor(index / numCols) * 10;
+                    ctx.fillStyle = pixel.style.backgroundColor;
+                    ctx.fillRect(x, y, 10, 10);
+                });
+                
+                const dataUrl = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = 'peachy-pixel-image.png';
+                link.href = dataUrl;
+                link.click();
+                showCopyNotification();
                 return;
             }
             
@@ -3477,6 +3611,7 @@
         asciiBtn.addEventListener('click', exportAsAscii);
         copyAsciiBtn.addEventListener('click', copyAsciiToClipboard);
         saveCustomCharBtn.addEventListener('click', saveCustomCharacter);
+        convertImageBtn.addEventListener('click', convertImageToPixels); // New listener
 
         // Initialize
         updatePixelSize();
